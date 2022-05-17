@@ -5,3 +5,5 @@
 <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
 <link rel="stylesheet" href="assets/css/Login-Form-Basic.css">
 <link rel="stylesheet" href="assets/css/styles.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
