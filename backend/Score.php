@@ -21,9 +21,9 @@
             $name = $user->getUserByEmail($r['email'])->fetch_assoc()['name'];
             $response[$i]['name'] = $name;
             $response[$i]['score'] = $r['score'];
+            $response[$i]['email'] = $r['email'];
             $i++;
         }
-        $response = array_unique($response);
         return $response;
     }
 } 

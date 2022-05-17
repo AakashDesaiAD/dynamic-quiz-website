@@ -1,7 +1,8 @@
 <?php 
 
  include_once ('Dbconnect.php');
-   
+session_start();
+
  class Question extends Dbconnect 
  {    
     public function __construct() 
@@ -25,26 +26,29 @@
         $qd = $data->fetch_assoc();
         if ($qd['right_answer'] === $postData['option']) {
             $response['status'] = true;
-            session_start();
             $_SESSION['score'] = $_SESSION['score']+1;
-            if ($maxQ === $postData["qid"]) {
-                $response['finalQuestion'] = $this->saveScore();
-            }
         } else {
             $response['status'] = false;
             $response['right_answer'] = $qd['right_answer'];
+        }
+        if ($maxQ == $postData["qid"]) {
+            $response['finalQuestion'] = $this->saveScore();
         }
         return $response;
     }
 
     public function saveScore()
     {
+        $response = true;
         $score = $_SESSION['score'];
         $email = $_SESSION['email'];
-        echo "<pre>"; print_r($email); exit;
         $query = "INSERT INTO score (id, email, score) VALUES (NULL, '{$email}', '{$score}')";
         $data = $this->connection->query($query);
-        return true;
+
+        if ($data !== TRUE) {
+            $response = false;
+        }
+        return $response;
     }
 } 
  ?>

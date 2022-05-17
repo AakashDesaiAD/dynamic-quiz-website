@@ -18,7 +18,10 @@
 	<div class="container" style="width: 100%;">
         <div class="bg-primary p-3 rounded my-3 d-flex justify-content-between align-items-center">
             <h1 class="text-white">Quiz</h1>
-            <a href="backend/logout.php" class="btn btn-danger">Log Out</a>
+            <div>
+                <a href="leaderboard.php" class="btn btn-warning">Go To Leaderboard</a>
+                <a href="backend/logout.php" class="btn btn-danger">Log Out</a>
+            </div>
         </div>
         <?php
         	while ($q = $questions->fetch_assoc()) {
@@ -65,7 +68,7 @@
                                 $(".questionForm-<?php echo $q['id'] ?>").hide();
                                 $(".questionForm-<?php echo $q['id']+1 ?>").show();
                             }
-                            setTimeout(nextQ,2000);
+                            setTimeout(nextQ,1000);
                             if (data.finalQuestion) {
                                 location.href = "leaderboard.php";
                             }
