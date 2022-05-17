@@ -31,5 +31,32 @@ class User extends Dbconnect {
 
 		return $response;
 	}
+
+	public function signUp($data)
+	{
+		$response = [];
+		$name = $data['name'];
+		$email = $data['email'];
+		$password = password_hash($data['password'], PASSWORD_DEFAULT);
+
+		$query = "INSERT INTO user (id, name, email, password) VALUES (NULL, '{$name}', '{$email}', '{$password}')";
+		$statement = $this->connection->query($query);
+
+		if ($statement) {
+			$response['status'] = true;
+			session_start();
+			$_SESSION['email'] = $email;
+			header("location: ./index.php");
+		} else {
+			$response['status'] = false;
+		}
+
+		return $response;
+	}
+
+	public function getUserByEmail($email)
+	{
+		return $statement = $this->connection->query("SELECT * FROM user WHERE email = '{$email}'");
+	}
 }
 ?>

@@ -1,3 +1,25 @@
+<?php
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+
+  session_start();
+  if (isset($_SESSION['email'])) {
+    header("location: ./index.php");
+  }
+  include 'backend/User.php';
+  $user = new User();
+  $response = [];
+  $response['status'] = true;
+
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!empty($_POST['email']) && !empty($_POST['name']) && !empty($_POST['password'])) {
+        $response = $user->signUp($_POST);
+    } else {
+        $response['status'] = false;
+    }
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,6 +48,13 @@
                                         d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z">
                                     </path>
                                 </svg>
+                            </div>
+                            <div>
+                              <?php
+                                if ($response['status'] == false) {
+                                  echo '<p class="alert alert-danger">Something went wrong.</p>';
+                                }
+                              ?>
                             </div>
                         <form class="text-center" method="post" action="<?=$_SERVER['PHP_SELF'];?>">
                             <div class="mb-3">

@@ -4,6 +4,7 @@
     	header("location: login.php");
   	}
 
+    $_SESSION['score'] = 0;
   	include 'backend/Question.php';
   	$question = new Question();
   	$questions = $question->getAllQuestions();
@@ -15,11 +16,14 @@
 </head>
 <body>
 	<div class="container" style="width: 100%;">
-        <h1>Quiz</h1>
+        <div class="bg-primary p-3 rounded my-3 d-flex justify-content-between align-items-center">
+            <h1 class="text-white">Quiz</h1>
+            <a href="backend/logout.php" class="btn btn-danger">Log Out</a>
+        </div>
         <?php
         	while ($q = $questions->fetch_assoc()) {
         ?>
-        <div>
+        <div class="questionForm<?php echo '-'.$q['id']; ?> questionForm">
             <p><?php echo $q['id']; ?> .&nbsp;<?php echo $q['question']; ?></p>
             <form id="<?php echo 'form-'.$q['id']; ?>">
                 <label class="d-flex my-1 btn btn-primary">
@@ -57,6 +61,14 @@
                                 $("#"+data.right_answer+"<?php echo "_".$q['id'] ?>").parent().addClass("btn-success").removeClass("btn-danger");
                                 allInput.attr('disabled', 'disabled');
                             }
+                            function nextQ() {
+                                $(".questionForm-<?php echo $q['id'] ?>").hide();
+                                $(".questionForm-<?php echo $q['id']+1 ?>").show();
+                            }
+                            setTimeout(nextQ,2000);
+                            if (data.finalQuestion) {
+                                location.href = "leaderboard.php";
+                            }
 					   	}
 					   });
 					});
@@ -65,6 +77,10 @@
         </div>
     	<?php } ?>
     </div>
+    <script type="text/javascript">
+        $(".questionForm").hide();
+        $(".questionForm-1").show();
+    </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
